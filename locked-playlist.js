@@ -25,42 +25,36 @@ document.addEventListener("DOMContentLoaded", function() {
     videoPlayerContainer.style.height = (videoWidth * 9 / 16) + 'px'; // Maintain 16:9 aspect ratio
   }
 
- function handleVideoClick(title) {
-  // Ensure locked overlay is hidden by default
-  lockedOverlay.style.display = "none";
+  function handleVideoClick(title) {
+    const isLocked = title.getAttribute("data-locked") === "true";
+    if (isLocked) {
+      lockedOverlay.style.display = "flex"; // Show locked overlay if the video is locked
+    } else {
+      lockedOverlay.style.display = "none"; // Hide locked overlay if the video is not locked
+      videoTitles.forEach(item => item.classList.remove("active"));
+      title.classList.add("active");
+      const videoUrl = title.getAttribute("data-video-url");
+      const videoType = title.getAttribute("data-type");
+      const newPlayer = createVideoPlayer(videoUrl, videoType);
 
-  const isLocked = title.getAttribute("data-locked") === "true";
-  if (isLocked) {
-    // Show locked overlay if the video is locked
-    lockedOverlay.style.display = "flex";
-  } else {
-    // Proceed to play the video if it's not locked
-    videoTitles.forEach(item => item.classList.remove("active"));
-    title.classList.add("active");
-    const videoUrl = title.getAttribute("data-video-url");
-    const videoType = title.getAttribute("data-type");
-    const newPlayer = createVideoPlayer(videoUrl, videoType);
-
-    videoPlayerContainer.innerHTML = '';
-    videoPlayerContainer.appendChild(newPlayer);
-    videoPlayer = newPlayer;
-    if (videoType === "mp4") {
-      videoPlayer.play();
+      videoPlayerContainer.innerHTML = '';
+      videoPlayerContainer.appendChild(newPlayer);
+      videoPlayer = newPlayer;
+      if (videoType === "mp4") {
+        videoPlayer.play();
+      }
+      setPlayerHeight();
     }
-    setPlayerHeight();
   }
-}
-
-
 
   videoTitles.forEach(title => {
     title.addEventListener("click", function() {
-      handleVideoClick(this);  // Call handleVideoClick on click
+      handleVideoClick(this); // Call handleVideoClick on click
     });
 
     // Add touch support
     title.addEventListener("touchstart", function() {
-      this.click();  // Call click event on touchstart
+      this.click(); // Call click event on touchstart
     });
   });
 
