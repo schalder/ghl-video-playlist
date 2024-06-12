@@ -25,27 +25,26 @@ document.addEventListener("DOMContentLoaded", function() {
     videoPlayerContainer.style.height = (videoWidth * 9 / 16) + 'px'; // Maintain 16:9 aspect ratio
   }
 
-  function handleVideoClick(title) {
-    const isLocked = title.getAttribute("data-locked") === "true";
-    if (isLocked) {
-      lockedOverlay.style.display = "flex";  // Ensure locked overlay is shown
-    } else {
-      lockedOverlay.style.display = "none";  // Ensure locked overlay is hidden
-      videoTitles.forEach(item => item.classList.remove("active"));
-      title.classList.add("active");
-      const videoUrl = title.getAttribute("data-video-url");
-      const videoType = title.getAttribute("data-type");
-      const newPlayer = createVideoPlayer(videoUrl, videoType);
+ function handleVideoClick(title) {
+  const isLocked = title.getAttribute("data-locked") === "true";
+  lockedOverlay.style.display = isLocked ? "flex" : "none"; // Show locked overlay if the video is locked
+  if (!isLocked) { // Proceed only if the video is not locked
+    videoTitles.forEach(item => item.classList.remove("active"));
+    title.classList.add("active");
+    const videoUrl = title.getAttribute("data-video-url");
+    const videoType = title.getAttribute("data-type");
+    const newPlayer = createVideoPlayer(videoUrl, videoType);
 
-      videoPlayerContainer.innerHTML = '';
-      videoPlayerContainer.appendChild(newPlayer);
-      videoPlayer = newPlayer;
-      if (videoType === "mp4") {
-        videoPlayer.play();
-      }
-      setPlayerHeight();
+    videoPlayerContainer.innerHTML = '';
+    videoPlayerContainer.appendChild(newPlayer);
+    videoPlayer = newPlayer;
+    if (videoType === "mp4") {
+      videoPlayer.play();
     }
+    setPlayerHeight();
   }
+}
+
 
   videoTitles.forEach(title => {
     title.addEventListener("click", function() {
