@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", function() {
   function handleVideoClick(title) {
     const isLocked = title.getAttribute("data-locked") === "true";
     if (isLocked) {
-      lockedOverlay.style.display = "flex";
+      lockedOverlay.style.display = "flex";  // Ensure locked overlay is shown
     } else {
-      lockedOverlay.style.display = "none";
+      lockedOverlay.style.display = "none";  // Ensure locked overlay is hidden
       videoTitles.forEach(item => item.classList.remove("active"));
       title.classList.add("active");
       const videoUrl = title.getAttribute("data-video-url");
@@ -49,12 +49,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
   videoTitles.forEach(title => {
     title.addEventListener("click", function() {
-      handleVideoClick(this);
+      handleVideoClick(this);  // Call handleVideoClick on click
     });
 
     // Add touch support
     title.addEventListener("touchstart", function() {
-      this.click();
+      this.click();  // Call click event on touchstart
     });
   });
 
