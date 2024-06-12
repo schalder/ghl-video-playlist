@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Add touch support
     title.addEventListener("touchstart", function() {
-      handleVideoClick(this);
+      this.click();
     });
   });
 
