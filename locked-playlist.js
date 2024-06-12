@@ -26,9 +26,15 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
  function handleVideoClick(title) {
+  // Ensure locked overlay is hidden by default
+  lockedOverlay.style.display = "none";
+
   const isLocked = title.getAttribute("data-locked") === "true";
-  lockedOverlay.style.display = isLocked ? "flex" : "none"; // Show locked overlay if the video is locked
-  if (!isLocked) { // Proceed only if the video is not locked
+  if (isLocked) {
+    // Show locked overlay if the video is locked
+    lockedOverlay.style.display = "flex";
+  } else {
+    // Proceed to play the video if it's not locked
     videoTitles.forEach(item => item.classList.remove("active"));
     title.classList.add("active");
     const videoUrl = title.getAttribute("data-video-url");
@@ -44,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
     setPlayerHeight();
   }
 }
+
 
 
   videoTitles.forEach(title => {
